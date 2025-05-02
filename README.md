@@ -1,4 +1,5 @@
 ﻿# Thomson Problem Optimization
+![TPSC](https://github.com/user-attachments/assets/e81d26f2-3c76-45eb-9803-1e1ea320adf1)
 
 ## Overview
 This project implements optimization techniques to solve the **Thomson Problem**, which involves distributing electrons (points) on a sphere to minimize electrostatic potential energy. The solution employs **Gradient Descent** and **Simulated Annealing** optimizers with real-time visualization using **PyVista**.

@@ -1,8 +1,14 @@
 ﻿# Thomson Problem Optimization
+
+[![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 ![TPSC](https://github.com/user-attachments/assets/e81d26f2-3c76-45eb-9803-1e1ea320adf1)
 
 ## Overview
-This project implements optimization techniques to solve the **Thomson Problem**, which involves distributing electrons (points) on a sphere to minimize electrostatic potential energy. The solution employs **Gradient Descent** and **Simulated Annealing** optimizers with real-time visualization using **PyVista**.
+An optimization-based solver for the **Thomson Problem**, focused on minimizing electrostatic potential energy by distributing electrons on a sphere using **Gradient Descent** and **Simulated Annealing**, with real-time 3D visualization.
+
+> The Thomson Problem seeks the minimum-energy configuration of N electrons confined to the surface of a unit sphere, where electrons repel each other according to Coulomb's law. This project implements numerical optimization techniques to approximate these configurations efficiently.
 
 ## Features
 - **Gradient Descent Optimization** for energy minimization
@@ -20,9 +26,8 @@ pip install numpy scipy pyvista
 ```
 
 ## Usage
-### Running the Optimization
-The following script initializes a **30-electron system** and optimizes their positions using **Gradient Descent** with real-time rendering.
 
+### Gradient Descent
 ```python
 from thomson_problem.utils import get_random_points, chord_distance
 from thomson_problem.optimizers.gradient_descent_optimizer import GradientDescentOptimizer
@@ -43,39 +48,38 @@ if __name__ == "__main__":
     simulator = GradientDescentOptimizer(iters, learning_rate)
     simulator.optimize(instance, renderer)
     
-    print(f"Best cost: {simulator.best_cost}, Elapsed: {time.time()-start}")
+    print(f"Best cost: {optimizer.best_cost}, Elapsed: {time.time() - start:.2f} seconds")
 ```
 
 ### Simulated Annealing
-To use Simulated Annealing, replace the optimizer:
 
 ```python
 from thomson_problem.optimizers.simulated_annealing import SimulatedAnnealing
-simulator = SimulatedAnnealing(iters=100000, temperature=25000, step_size=0.05)
+optimizer = SimulatedAnnealing(iters=100000, temperature=25000, step_size=0.05)
 ```
 
-## Components
+## Architecture
 ### **1. Solutions**
-- **GradientDescentSolution**: Implements a **gradient-based approach** to optimize point positions moving each point in the negative gradient direction each iteration.
-- **RandomShift**: Randomly perturbs points to explore the solution space.
+- `GradientDescentSolution`: Encapsulates the energy function and gradient computation. Supports updates based on gradient flow.
+- `RandomShift`: Random perturbations for escaping local minima (used in annealing).
 
 ### **2. Optimizers**
-- **GradientDescentOptimizer**: Controls the learning rate schedule and number of iterations for gradient descent.
-- **SimulatedAnnealing**: Uses probabilistic exploration to avoid local minima, typical simulated annealing implementation.
+- `GradientDescentOptimizer`: Controls the learning rate schedule and number of iterations for gradient descent.
+- `SimulatedAnnealing`: Probabilistic optimizer with temperature-based acceptance criteria.
 
 ### **3. Renderer**
-- **ConvexHullRenderer**: Uses **PyVista** to visualize the points and their convex hull in 3D.
+- `ConvexHullRenderer`: Real-time rendering of the spherical distribution and convex hull using **PyVista**.
 
-## Performance Tuning
-- **Increase Iterations (`iters`)**: Improves convergence.
-- **Adjust Learning Rate (`learning_rate`)**: Fine-tune step sizes for better optimization.
-- **Experiment with Temperature (`temperature`)**: Controls randomness in **Simulated Annealing**.
+## 📈 Performance Tuning
+- **Increase Iterations (`iters`)**: Higher values may yield better convergence but increase runtime.
+- **Adjust Learning Rate (`learning_rate`)**: Too large may overshoot minima; too small may slow convergence.
+- **Temperature (`temperature`)**: Higher initial temperatures allow better exploration in simulated annealing.
 
-## Impovements
+## 🔧 Impovements
 - Add GPU support
-- Add more customizability in current classes (different schedules to be passed in or different cost functions)
-- Possible hybrid approaches or novel algorithms could be explored
+- Support for custom cost functions and learning schedules
+- Implement hybrid or evolutionary algorithms
 
-## License
-MIT License. Free to use and modify.
+## 📜 License
+This project is licensed under the [MIT License](LICENSE).
 
